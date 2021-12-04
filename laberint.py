@@ -2,7 +2,7 @@ import os
 
 #### F U N C I O N E S ####
 # Limpiar la terminal
-# No funciona al ejecutar en ventana interactiva :(
+# No funciona al ejecutar en ventana interactiva 
 def clear():
     if os.name == "nt":
         os.system("cls")
@@ -28,9 +28,10 @@ def crear_laberinto_vacio(dim):
     
     return l
 
-
-
+# Pone las "X" en el laberinto donde esta especificado que debe haber un muro
 def ajustar_muros_laberinto(l,muros):
+    for m in muros:
+        l[m[0]] [m[1]] = "X"
 
 def mostrar_laberinto(titulo,laberinto):
 
@@ -40,7 +41,6 @@ def mostrar_laberinto(titulo,laberinto):
 
 
 #### V A R I A B L E S   G L O B A L E S ####
-
 muros = ((0, 1), (0, 2), (0, 3), (0, 4), (1, 1), (2, 1),
         (2, 3), (3, 3), (4, 0), (4, 1), (4, 2), (4, 3))
 
