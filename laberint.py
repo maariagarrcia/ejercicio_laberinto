@@ -46,13 +46,24 @@ def mostrar_laberinto(titulo, laberinto):
     for fila in laberinto:
         for casilla in fila:
             if (casilla == " "):
-                print(colorama.Back.WHITE + " ",end=" ")
+                print(colorama.Back.WHITE + "  ",end="")
+            elif(casilla== "E"):
+                print(colorama.Back.GREEN +" E",end="")
+            elif(casilla== "S"):
+                print(colorama.Back.GREEN + " S", end="")
             else:
-                print(colorama.Back.RED + " ", end=" ")
+                print(colorama.Back.RED + " X", end="")
         print(colorama.Back.BLACK)
 
     print(colorama.Back.BLACK)
 
+def poner_casilla_entrada(lab,fila,columna):
+    lab[fila][columna]="E"
+    return lab
+
+def poner_casilla_salida(lab,fila,columna):
+    lab[fila][columna]="S"
+    return lab
 
 #### V A R I A B L E S   G L O B A L E S ####
 muros = ((0, 1), (0, 2), (0, 3), (0, 4), (1, 1), (2, 1),
@@ -71,4 +82,6 @@ mostrar_laberinto("Laberinto vacio", laberinto)
 
 # Creacion del laberinto con muros
 ajustar_muros_laberinto(laberinto,muros)
+poner_casilla_entrada(laberinto,0,0)
+poner_casilla_salida(laberinto,4,4)
 mostrar_laberinto("Laberinto con muros", laberinto)
