@@ -1,3 +1,13 @@
+#
+#
+# SECCIONES DEL PROGRAMA
+# ----------------------
+# 1)Imports
+# 2)Funcions
+# 3)Variables globals
+# 4)Inicio programa
+#
+
 import os
 import colorama
 
@@ -65,6 +75,20 @@ def poner_casilla_salida(lab,fila,columna):
     lab[fila][columna]="S"
     return lab
 
+def ajustar_camino_sobre_laberinto(laberinto,entrada,salida,camino_salida):
+
+def crear_diccionario_casillas(dim):
+
+#False --> opcion no valida
+# True --> es el paso posible 
+def paso_posible(laberinto, casillas_usadas,dim,num_fila,num_columna):
+
+def dar_un_paso(laberinto,casillas_usadas,dim,pos_actual):
+
+def marcar_casilla_como_usada(casillas_usadas,casilla):
+
+def buscar_camino_salida(laberinto,casillas_usadas,dim):
+
 #### V A R I A B L E S   G L O B A L E S ####
 muros = ((0, 1), (0, 2), (0, 3), (0, 4), (1, 1), (2, 1),
         (2, 3), (3, 3), (4, 0), (4, 1), (4, 2), (4, 3))
@@ -72,16 +96,26 @@ muros = ((0, 1), (0, 2), (0, 3), (0, 4), (1, 1), (2, 1),
 # Ancho y alto del laberinto ya que se supone cuadrado
 dimension= 5
 
-clear()
 
 
 ####  I N I C I O    P R O G R A M A  ####
+clear()
+
 # Creacion del laberinto sin muros
 laberinto= crear_laberinto_vacio(dimension)
-mostrar_laberinto("Laberinto vacio", laberinto)
+#mostrar_laberinto("Laberinto vacio", laberinto)
 
 # Creacion del laberinto con muros
 ajustar_muros_laberinto(laberinto,muros)
 poner_casilla_entrada(laberinto,0,0)
 poner_casilla_salida(laberinto,4,4)
-mostrar_laberinto("Laberinto con muros", laberinto)
+#mostrar_laberinto("Laberinto con muros", laberinto)
+
+
+mostrar_laberinto("Laberinto completo", laberinto)
+casillas_usadas = crear_diccionario_casillas(dimension)
+camino_salida = buscar_camino_salida(laberinto, casillas_usadas, dimension)
+ajustar_camino_sobre_laberinto(laberinto,casillas_usadas,dimension)
+mostrar_laberinto("Caminoo de salida",laberinto)
+
+print(camino_salida)
