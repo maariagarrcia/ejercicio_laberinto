@@ -77,6 +77,8 @@ def poner_casilla_salida(lab,fila,columna):
 
 def ajustar_camino_sobre_laberinto(laberinto,entrada,salida,camino_salida):
 
+
+
 # Creacion del diccionario para guardar todas las casillas usadas
 # y para no volverlas a visitar
 def crear_diccionario_casillas(dim):
@@ -91,9 +93,41 @@ def crear_diccionario_casillas(dim):
             casillas[str(num_fila)+"-" + str(num_columna)]=False
     return casillas
 
+
+
+# En principio para cada casilla son posibles cuatro pasos, 
+# (arriba,abajo,derecha,izquierda),
+# pero hay que descartar los siguientes casos:
+# - Que la casilla esté fuera del laberinto
+# - Que en la casilla haya un muro ("X")
+# - Que sea la casilla de entrada al laberintoo ("E")
+# - Que la casilla haya  sido visitada previamente. Para esto
+# usaremos el diccionario casillas_usadas
 #False --> opcion no valida
 # True --> es el paso posible 
 def paso_posible(laberinto, casillas_usadas,dim,num_fila,num_columna):
+    # Comprobar si fila fuera de rango
+    if (num_fila<0) or (num_columna>=dim):
+      return False
+
+    # Comprobar si columna fuera de rango
+    if(num_columna<0) or (num_columna>=dim):
+        return False
+
+    # Comprobar si hay un ladrillo
+    if (laberinto[num_fila][num_columna] == "X"):
+        return False
+
+    # Comprobar si es la casilla de entrada
+    if (laberinto[num_fila][num_columna] == "E"):
+        return False
+
+    # Comprobar si esta casilla ya se descarto
+    if (casillas_usadas[str(num_fila)+"-"+str(num_columna)]):
+        return False
+
+    return True
+
 
 def dar_un_paso(laberinto,casillas_usadas,dim,pos_actual):
 
