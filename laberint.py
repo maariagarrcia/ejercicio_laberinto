@@ -77,7 +77,19 @@ def poner_casilla_salida(lab,fila,columna):
 
 def ajustar_camino_sobre_laberinto(laberinto,entrada,salida,camino_salida):
 
+# Creacion del diccionario para guardar todas las casillas usadas
+# y para no volverlas a visitar
 def crear_diccionario_casillas(dim):
+    # Creamos un diccionario con todas las casillas del 
+    # laberinto y un indicador booleano (False) de q no se ha usado
+    
+    casillas= {}
+
+    for num_fila in range(0,dim):
+        for num_columna in range(0,dim):
+            #Añadir una nueva casilla al diccionario
+            casillas[str(num_fila)+"-" + str(num_columna)]=False
+    return casillas
 
 #False --> opcion no valida
 # True --> es el paso posible 
