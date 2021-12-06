@@ -128,8 +128,28 @@ def paso_posible(laberinto, casillas_usadas,dim,num_fila,num_columna):
 
     return True
 
-
+#  Hay  4 posibles pasos, pero hay bastantes casos en los
+# que  no tenemos cuatro opciones ya que estan fuera de la pantalla
 def dar_un_paso(laberinto,casillas_usadas,dim,pos_actual):
+    num_fila= pos_actual[0]
+    num_columna= pos_actual[1]
+    #  Explorar ABAJO
+    if paso_posible(laberinto, casillas_usadas, dim, num_fila+1, num_columna):
+        return(num_fila+1,num_columna)
+
+    # Explorar DERECHA
+    if paso_posible(laberinto, casillas_usadas, dim, num_fila, num_columna+1):
+        return (num_fila, num_columna+1)
+
+    # Explorar IZQUIERDA
+    if paso_posible(laberinto, casillas_usadas, dim, num_fila, num_columna-1):
+        return (num_fila, num_columna-1)
+
+    # Explorar ARRIBA
+    if paso_posible(laberinto, casillas_usadas, dim, num_fila-1, num_columna):
+        return (num_fila-1, num_columna)
+
+    return ()
 
 def marcar_casilla_como_usada(casillas_usadas,casilla):
 
