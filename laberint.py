@@ -151,7 +151,12 @@ def dar_un_paso(laberinto,casillas_usadas,dim,pos_actual):
 
     return ()
 
+# Hay que marcar cada casilla estará marcada como usada después de dar un paso
 def marcar_casilla_como_usada(casillas_usadas,casilla):
+    num_fila=casilla[0]
+    num_columna=casilla[1]
+    casillas_usadas[str(num_fila)+ "-"+ str(num_columna)]= True
+
 
 def buscar_camino_salida(laberinto,casillas_usadas,dim):
 
