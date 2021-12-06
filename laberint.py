@@ -71,16 +71,19 @@ def mostrar_laberinto(titulo, laberinto):
 
     print(colorama.Back.BLACK + colorama.Fore.WHITE)
 
-def poner_casilla_entrada(lab,fila,columna):
-    lab[fila][columna]="E"
-    return lab
+def poner_casilla_entrada(lab,entrada):
+    lab[entrada[0]][entrada[1]]="E"
+    
 
-def poner_casilla_salida(lab,fila,columna):
-    lab[fila][columna]="S"
-    return lab
+def poner_casilla_salida(lab,salida):
+    lab[salida[0]][salida[1]]="S"
+    
 
+# Por cada paso que no sea la entrada/salida pondremos "·"
 def ajustar_camino_sobre_laberinto(laberinto,entrada,salida,camino_salida):
-
+    for paso in camino_salida:
+        if(paso != entrada) and (paso!=salida):
+            laberinto[paso[0]][paso[1]] = "·"
 
 
 # Creacion del diccionario para guardar todas las casillas usadas
@@ -165,12 +168,17 @@ def marcar_casilla_como_usada(casillas_usadas,casilla):
 def buscar_camino_salida(laberinto,casillas_usadas,dim):
 
 #### V A R I A B L E S   G L O B A L E S ####
+
+# Creacion tupla con las posiciones del muro
 muros = ((0, 1), (0, 2), (0, 3), (0, 4), (1, 1), (2, 1),
         (2, 3), (3, 3), (4, 0), (4, 1), (4, 2), (4, 3))
 
 # Ancho y alto del laberinto ya que se supone cuadrado
 dimension= 5
 
+# Posicion de entrada y salida del laberinto
+entrada=(0,0)
+salida=(4,4)
 
 
 ####  I N I C I O    P R O G R A M A  ####
