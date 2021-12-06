@@ -3,15 +3,20 @@
 # SECCIONES DEL PROGRAMA
 # ----------------------
 # 1)Imports
-# 2)Funcions
-# 3)Variables globals
+# 2)Funciones
+# 3)Variables globales
 # 4)Inicio programa
 #
 
+#1) I M P O R T S 
 import os
 import colorama
 
-#### F U N C I O N E S ####
+####
+#2) F U N C I O N E S 
+####
+
+
 # Limpiar la terminal
 # No funciona al ejecutar en ventana interactiva 
 def clear():
@@ -80,8 +85,13 @@ def poner_casilla_salida(lab,salida):
     lab[salida[0]][salida[1]]="S"
     
 
-# Por cada paso que no sea la entrada/salida pondremos "·"
+
 def ajustar_camino_sobre_laberinto(laberinto, entrada, salida, camino_salida):
+# Por cada paso que no sea la entrada/salida pondremos "·" para 
+# visualizarlo de una forma mas grafica.
+# Para ello usamos la lista de "camino_salida" que contiene las 
+# coordenadas de todas las celdas q forman partte del camino de salida.
+# A cada celda que forma parte del camino de salida la he denominado "paso"
     for paso in camino_salida:
         if(paso != entrada) and (paso != salida):
             laberinto[paso[0]][paso[1]] = "·"
@@ -104,9 +114,13 @@ def crear_diccionario_casillas(dim):
 
 
 
+
+def paso_posible(laberinto, casillas_usadas, dim, num_fila, num_columna):
+   # El objetivo de esta funcion es validar si una casilla
+# puede formar parte del camino de salida.
 # En principio para cada casilla son posibles cuatro pasos, 
 # (arriba,abajo,derecha,izquierda),
-# pero hay que descartar los siguientes casos:
+# pero, para que la casilla forme parte hay que descartar los siguientes casos:
 # - Que la casilla esté fuera del laberinto
 # - Que en la casilla haya un muro ("X")
 # - Que sea la casilla de entrada al laberintoo ("E")
@@ -114,13 +128,13 @@ def crear_diccionario_casillas(dim):
 # usaremos el diccionario casillas_usadas
 #False --> opcion no valida
 # True --> es el paso posible 
-def paso_posible(laberinto, casillas_usadas, dim, num_fila, num_columna):
+   
     # Comprobar si fila fuera de rango
-    if (num_fila<0) or (num_columna>=dim):
-      return False
+    if (num_fila < 0) or (num_fila >= dim):
+        return False
 
     # Comprobar si columna fuera de rango
-    if(num_columna<0) or (num_columna>=dim):
+    if (num_columna < 0) or (num_columna >= dim):
         return False
 
     # Comprobar si hay un ladrillo
@@ -131,10 +145,13 @@ def paso_posible(laberinto, casillas_usadas, dim, num_fila, num_columna):
     if (laberinto[num_fila][num_columna] == "E"):
         return False
 
-    # Comprobar si esta casilla ya se descarto
+    # Comprobar si esta casilla ya se exploró
     if (casillas_usadas[str(num_fila)+"-"+str(num_columna)]):
         return False
 
+    # Como no se dan las condiciones anteriores significa que la 
+    # casilla es candidata a ser parte del camino de salida y por 
+    # ello devolveremos True.
     return True
 
 #  Hay  4 posibles pasos, pero hay bastantes casos en los
