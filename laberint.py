@@ -52,13 +52,11 @@ def crear_laberinto_vacio(dim):
     
     return l
 
-
-
-def ajustar_muros_laberinto(l, muros):
+def ajustar_muros_laberinto(laberinto, muros):
     # Pone una  "X" en las casilla donde esta especificado
     # que debe haber un muro --> Casillas "NO transitables"
     for ladrillo in muros:
-        l[ladrillo[0]][ladrillo[1]] = "X"
+        laberinto[ladrillo[0]][ladrillo[1]] = "X"
 
 def mostrar_laberinto(titulo, laberinto):
     print(colorama.Fore.YELLOW + "*** " + titulo + " ***")
@@ -71,11 +69,12 @@ def mostrar_laberinto(titulo, laberinto):
             elif(celda== "S"):
                 print(colorama.Back.GREEN + "S ", end="")
             elif(celda=="X"):
-                print(colorama.Back.RED + " X", end="")
+                print(colorama.Back.RED + "X ", end="")
             elif(celda=="·"):
-                print(colorama.Back.YELLOW + " ··", end="")
+                print(colorama.Back.YELLOW + "··", end="")
             else:
                 print("Error en el laberinto --> Símbolo inesperado!")
+
         print(colorama.Back.BLACK + colorama.Fore.WHITE)
 
     print(colorama.Back.BLACK + colorama.Fore.WHITE)
@@ -84,7 +83,6 @@ def poner_casilla_entrada(lab,entrada):
     # Pone una  "E" en la casilla de entrada al laberinto
     lab[entrada[0]][entrada[1]]="E"
     
-
 def poner_casilla_salida(lab,salida):
     # Pone una "S" en la casilla de salida del laberinto
     lab[salida[0]][salida[1]]="S"
@@ -202,7 +200,7 @@ def buscar_camino_salida(laberinto,casillas_usadas,dim):
     # El bucle while iterará mientras no se haya encontrado la salida y mientras existan
     # celdas que explorar si conducen a una salida.
     salida = False
-    while (not salida) and  (len(camino)>0):
+    while (not salida) and (len(camino)>0):
         #Damos un paso en busca de la salida
         nuevo_paso = dar_un_paso(laberinto, casillas_usadas, dim, pos_actual)
         if (len(nuevo_paso) == 0):
@@ -235,8 +233,9 @@ def buscar_camino_salida(laberinto,casillas_usadas,dim):
 
 
 
-
-#### V A R I A B L E S   G L O B A L E S ####
+####
+#3) V A R I A B L E S   G L O B A L E S
+####
 
 # Creacion tupla con las posiciones del muro
 muros = ((0, 1), (0, 2), (0, 3), (0, 4), (1, 1), (2, 1),
@@ -255,24 +254,40 @@ caminoo_salida= []
 # Direccion de salida --> Instrucciones para ir hasta la salida en forma de direccion
 direccion_salida= []
 
-####  I N I C I O    P R O G R A M A  ####
+####
+#4) I N I C I O    P R O G R A M A
+####
+
 clear()
 
+# Crear el laberinto con muros, entrada y salida
 laberinto= crear_laberinto_vacio(dimension)
-# mostrar_laberinto("Laberinto vacio", laberinto)
-
 ajustar_muros_laberinto(laberinto,muros)
-# mostrar_laberinto("Laberinto con muros", laberinto)
-
-mostrar_laberinto("Laberinto completo", laberinto)
 poner_casilla_entrada(laberinto,entrada)
 poner_casilla_salida(laberinto,salida)
+mostrar_laberinto("Laberinto", laberinto)
 
+#Crear un diccionario que se usara para saber las casillas que ya se han explorado
+# con la finalidad de evitar ciclos en lo que se vuelva a explorar una casilla
+# una y otra vez ...
 casillas_usadas = crear_diccionario_casillas(dimension)
 
-camino_salida = buscar_camino_salida(laberinto, casillas_usadas, dimension)
+# mostrar_laberinto("Laberinto vacio", laberinto)
+# mostrar_laberinto("Laberinto con muros", laberinto)
 
+
+# Funcion principal
+camino_salida, direccion_salida = buscar_camino_salida(laberinto, casillas_usadas, dimension)
+
+# Marca el camino de salida  sobre el laberinto
 ajustar_camino_sobre_laberinto(laberinto,entrada,salida,camino_salida)
 mostrar_laberinto("Camino de salida",laberinto)
 
+# Mostrar las listas con información del camino de salida
+print(colorama.Fore.YELLOW +
+      "*** Dirección de salida: Dirección ha seguir para salir ***" + colorama.Fore.WHITE)
+print(direccion_salida)
+print()
+print(colorama.Fore.YELLOW +
+      "*** Camino de salida: celdas que forman parte del camino de salida ***" + colorama.Fore.WHITE)
 print(camino_salida)
