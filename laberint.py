@@ -54,18 +54,22 @@ def ajustar_muros_laberinto(l, muros):
 def mostrar_laberinto(titulo, laberinto):
     print("*** " + titulo + " ***")
     for fila in laberinto:
-        for casilla in fila:
-            if (casilla == " "):
+        for celda in fila:
+            if (celda == " "):
                 print(colorama.Back.WHITE + "  ",end="")
-            elif(casilla== "E"):
+            elif(celda== "E"):
                 print(colorama.Back.GREEN +" E",end="")
-            elif(casilla== "S"):
+            elif(celda== "S"):
                 print(colorama.Back.GREEN + " S", end="")
-            else:
+            elif(celda=="X"):
                 print(colorama.Back.RED + " X", end="")
-        print(colorama.Back.BLACK)
+            elif(celda=="·"):
+                print(colorama.Back.YELLOW + " ··", end="")
+            else:
+                print("Error en el laberinto --> Símbolo inesperado!")
+        print(colorama.Back.BLACK + colorama.Fore.WHITE)
 
-    print(colorama.Back.BLACK)
+    print(colorama.Back.BLACK + colorama.Fore.WHITE)
 
 def poner_casilla_entrada(lab,fila,columna):
     lab[fila][columna]="E"
