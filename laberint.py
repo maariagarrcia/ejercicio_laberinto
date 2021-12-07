@@ -65,13 +65,13 @@ def mostrar_laberinto(titulo, laberinto):
             if (celda == " "):
                 print(colorama.Back.WHITE + "  ",end="")
             elif(celda== "E"):
-                print(colorama.Back.GREEN +"E ",end="")
+                print(colorama.Back.GREEN +colorama.Fore.BLACK +"E ",end="")
             elif(celda== "S"):
-                print(colorama.Back.GREEN + "S ", end="")
+                print(colorama.Back.GREEN +colorama.Fore.BLACK + "S ", end="")
             elif(celda=="X"):
-                print(colorama.Back.RED + "X ", end="")
+                print(colorama.Back.RED + colorama.Fore.BLACK +"X ", end="")
             elif(celda=="·"):
-                print(colorama.Back.YELLOW + "··", end="")
+                print(colorama.Back.YELLOW +colorama.Fore.BLACK + "··", end="")
             else:
                 print("Error en el laberinto --> Símbolo inesperado!")
 
@@ -79,16 +79,14 @@ def mostrar_laberinto(titulo, laberinto):
 
     print(colorama.Back.BLACK + colorama.Fore.WHITE)
 
-def poner_casilla_entrada(lab,entrada):
+def poner_casilla_entrada(laberinto,entrada):
     # Pone una  "E" en la casilla de entrada al laberinto
-    lab[entrada[0]][entrada[1]]="E"
+    laberinto[entrada[0]][entrada[1]]="E"
     
-def poner_casilla_salida(lab,salida):
+def poner_casilla_salida(laberinto,salida):
     # Pone una "S" en la casilla de salida del laberinto
-    lab[salida[0]][salida[1]]="S"
+    laberinto[salida[0]][salida[1]]="S"
     
-
-
 def ajustar_camino_sobre_laberinto(laberinto,entrada,salida,camino_salida):
     # Por cada paso que no sea la entrada/salida pondremos "·" para 
     # visualizarlo de una forma mas grafica.
@@ -98,8 +96,6 @@ def ajustar_camino_sobre_laberinto(laberinto,entrada,salida,camino_salida):
     for paso in camino_salida:
         if(paso != entrada) and (paso != salida):
             laberinto[paso[0]][paso[1]] = "·"
-
-
 
 def crear_diccionario_casillas(dim):
     # Creacion del diccionario para guardar todas las casillas usadas
@@ -155,37 +151,52 @@ def paso_posible(laberinto, casillas_usadas, dim, num_fila, num_columna):
     # ello devolveremos True.
     return True
 
-#  Hay  4 posibles pasos, pero hay bastantes casos en los
-# que  no tenemos cuatro opciones ya que estan fuera de la pantalla
 def dar_un_paso(laberinto,casillas_usadas,dim,pos_actual):
-    num_fila= pos_actual[0]
-    num_columna= pos_actual[1]
-    #  Explorar ABAJO
+    #  Hay  4 posibles pasos, pero hay bastantes casos en los
+    # que  no tenemos cuatro opciones ya que estan fuera de la pantalla.
+    # El objetivo de esta funcion es, estando en una posicion del laberinto
+    # decidir la siguiente casilla a explorar para buscar la salida.
+
+    # Extraemos las coordenadas de la tupla pos_actual que es la que nos indica
+    # en que posicion del laberinto nos encontramos.
+    num_fila = pos_actual[0]
+    num_columna = pos_actual[1]
+    #  Explorar hacia ABAJO
     if paso_posible(laberinto, casillas_usadas, dim, num_fila+1, num_columna):
-        return(num_fila+1,num_columna)
+        # paso posible() a devuelto True, por lo que hemos validado que podemos dar un paso
+        # hacia la casilla inferior a la actual.
+        return(num_fila+1,num_columna), "Abajo"
 
     # Explorar DERECHA
     if paso_posible(laberinto, casillas_usadas, dim, num_fila, num_columna+1):
-        return (num_fila, num_columna+1)
+        # paso posible() a devuelto True, por lo que hemos validado que podemos dar un paso
+        # hacia la casilla derecha a la actual.
+        return (num_fila, num_columna+1), "Derecha"
 
     # Explorar IZQUIERDA
     if paso_posible(laberinto, casillas_usadas, dim, num_fila, num_columna-1):
-        return (num_fila, num_columna-1)
+        # paso posible() a devuelto True, por lo que hemos validado que podemos dar un paso
+        # hacia la casilla izquierda a la actual.
+        return (num_fila, num_columna-1), "Izquierda"
 
     # Explorar ARRIBA
     if paso_posible(laberinto, casillas_usadas, dim, num_fila-1, num_columna):
-        return (num_fila-1, num_columna)
+        # paso posible() a devuelto True, por lo que hemos validado que podemos dar un paso
+        # hacia la casilla superior a la actual.
+        return (num_fila-1, num_columna), "Arriba"
 
+    # No hemos encontrado ninguna casilla a la que movernos desde la actual
+    # por lo que devolvemoso una tupla vacia() para indicar que no hay ninguna opcion
+    # de continuar por este camino.
     return ()
 
-# Hay que marcar cada casilla estará marcada como usada después de dar un paso
 def marcar_casilla_como_usada(casillas_usadas,casilla):
-    num_fila=casilla[0]
-    num_columna=casilla[1]
-    casillas_usadas[str(num_fila)+ "-" + str(num_columna)]= True
+    # Hay que marcar cada casilla como usada después de dar un paso
+    num_fila = casilla[0]
+    num_columna = casilla[1]
+    casillas_usadas[str(num_fila)+"-"+str(num_columna)] = True
 
-
-def buscar_camino_salida(laberinto,casillas_usadas,dim):
+def buscar_camino_salida(laberinto, casillas_usadas, dim):
     # Funcion principal del programa y su objetivo es
     # calcular un camino de salida entre los que pueda haber.
     #Empezamos directamente en la casilla de entrada
@@ -200,9 +211,10 @@ def buscar_camino_salida(laberinto,casillas_usadas,dim):
     # El bucle while iterará mientras no se haya encontrado la salida y mientras existan
     # celdas que explorar si conducen a una salida.
     salida = False
-    while (not salida) and (len(camino)>0):
+    while (not salida) and (len(camino) > 0):
         #Damos un paso en busca de la salida
-        nuevo_paso = dar_un_paso(laberinto, casillas_usadas, dim, pos_actual)
+        nuevo_paso, nueva_direccion = dar_un_paso(laberinto,casillas_usadas,dim,pos_actual)
+
         if (len(nuevo_paso) == 0):
             # No hemos podido desde la celda actual -> len(nuevo_paso) == 0
 
@@ -223,7 +235,7 @@ def buscar_camino_salida(laberinto,casillas_usadas,dim):
 
             # Marcamos la casilla como usada para no volverla a explorar
             marcar_casilla_como_usada(casillas_usadas, nuevo_paso)
-            pos_actual=nuevo_paso
+            pos_actual = nuevo_paso
 
         # Marcar casilla como usada en el diccionario
         salida= laberinto[pos_actual[0]][pos_actual[1]] == "S" 
@@ -239,7 +251,7 @@ def buscar_camino_salida(laberinto,casillas_usadas,dim):
 
 # Creacion tupla con las posiciones del muro
 muros = ((0, 1), (0, 2), (0, 3), (0, 4), (1, 1), (2, 1),
-        (2, 3), (3, 3), (4, 0), (4, 1), (4, 2), (4, 3))
+            (2, 3), (3, 3), (4, 0), (4, 1), (4, 2), (4, 3))
 
 # Ancho y alto del laberinto ya que se supone cuadrado
 dimension= 5
@@ -248,8 +260,8 @@ dimension= 5
 entrada=(0,0)
 salida=(4,4)
 
-# Camino de slida --> Lista de coordenads de casillas que conducen a la salida
-caminoo_salida= []
+# Camino de salida --> Lista de coordenads de casillas que conducen a la salida
+camino_salida= []
 
 # Direccion de salida --> Instrucciones para ir hasta la salida en forma de direccion
 direccion_salida= []
@@ -284,10 +296,8 @@ ajustar_camino_sobre_laberinto(laberinto,entrada,salida,camino_salida)
 mostrar_laberinto("Camino de salida",laberinto)
 
 # Mostrar las listas con información del camino de salida
-print(colorama.Fore.YELLOW +
-      "*** Dirección de salida: Dirección ha seguir para salir ***" + colorama.Fore.WHITE)
+print(colorama.Fore.YELLOW + "*** Dirección de salida: Dirección ha seguir para salir ***" + colorama.Fore.WHITE)
 print(direccion_salida)
 print()
-print(colorama.Fore.YELLOW +
-      "*** Camino de salida: celdas que forman parte del camino de salida ***" + colorama.Fore.WHITE)
+print(colorama.Fore.YELLOW + "*** Camino de salida: celdas que forman parte del camino de salida ***" + colorama.Fore.WHITE)
 print(camino_salida)
