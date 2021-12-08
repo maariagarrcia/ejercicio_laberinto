@@ -120,10 +120,10 @@ def paso_posible(laberinto, casillas_usadas, dim, num_fila, num_columna):
     # pero, para que la casilla forme parte hay que descartar los siguientes casos:
     # - Que la casilla esté fuera del laberinto
     # - Que en la casilla haya un muro ("X")
-    # - Que sea la casilla de entrada al laberintoo ("E")
-    # - Que la casilla haya  sido visitada previamente. Para esto
+    # - Que sea la casilla de entrada al laberinto ("E")
+    # - Que la casilla haya sido visitada previamente. Para esto
     # usaremos el diccionario casillas_usadas
-    #False --> opcion no valida
+    # False --> opcion no valida
     # True --> es el paso posible 
    
     # Comprobar si fila fuera de rango
@@ -186,7 +186,7 @@ def dar_un_paso(laberinto,casillas_usadas,dim,pos_actual):
         return (num_fila-1, num_columna), "Arriba"
 
     # No hemos encontrado ninguna casilla a la que movernos desde la actual
-    # por lo que devolvemoso una tupla vacia() para indicar que no hay ninguna opcion
+    # por lo que devolvemos una tupla vacia() para indicar que no hay ninguna opcion
     # de continuar por este camino.
     return ()
 
@@ -199,7 +199,7 @@ def marcar_casilla_como_usada(casillas_usadas,casilla):
 def buscar_camino_salida(laberinto, casillas_usadas, dim):
     # Funcion principal del programa y su objetivo es
     # calcular un camino de salida entre los que pueda haber.
-    #Empezamos directamente en la casilla de entrada
+    # Empezamos directamente en la casilla de entrada
     # Damos por hecho que la entrada siempre está en la esquina superior izquierda --> coordenadas 0,0.
     pos_actual = (0,0)
     camino= [(0, 0)]
