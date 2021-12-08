@@ -1,6 +1,6 @@
 # ejercicio_laberinto
 
-Mi direccion de github para este repositorio es el siguiente:
+Mi direccion de github para este repositorio es el siguiente: https://github.com/maariagarrcia/ejercicio_laberinto.git
 
 El diagrama de flujo que tenemos es el siguiente: https://www.figma.com/file/lU7S3UeuzPpHZ864pwJKVk/Untitled?node-id=0%3A1
 
